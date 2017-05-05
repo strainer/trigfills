@@ -71,11 +71,11 @@ function sintay(x,f6,f120,f5k,f362k){ //taylor series calculation, last fac is t
 }
 
 //~ var f24=1/24,f720=1/720,f40k=1/40580   //orig: 40320
-function costay(x,f2,f24,f720,f40k){
+function costay(x,f1,f2,f24,f720,f40k){
   
   //if(x>qpi){ return sintay(hpi-x) }
   var x2=x*x,x4=x2*x2
-  return 1- x2*f2 + x4*f24 - x2*x4*f720 + x4*x4*f40k 
+  return f1- x2*f2 + x4*f24 - x2*x4*f720 + x4*x4*f40k 
   
 }
 
@@ -107,32 +107,150 @@ function funcomp(fna,fnb,s,e,d){
 }
 
 var tal=100000000000, max=tal, talv=tal, maxv=max,ocount=0
+      
+var dz=[100000000000, 10000000000, 100000,  10000,      000]
+var tz=[100000013976,19999943266,2399623,7241175,  40578583]
 
-///tan
-//~ var f15=2/15,f315=17/315,f2k=62/2835,f155k=1382/146555
-//~ var fg3=1000000000/2999999887,f15=200000000/1500000678
-   //~ ,f315=170000/3150457,f2k=6200/282874,f155k=1382/146286
+//~ f24=1/24,f720=1/720,f40k=1/40580
 
-// 5.055947837602811e-16 7.50332374011009e-9
-//~ var dz=[1,2,17,62,1382] 
-//~ var tz=[3,15,315,2835,146555]
-//3.9470683287115024e-17 1.5836425504289764e-9
-//3.971392736648054e-17 1.5704270106553508e-9
-//~ var dz=[1000000000, 200000000, 170000,  6200,  1382]
-//~ var tz=[2999999887,1500000678,3150457,282874,146286]
+//~ var tz=[10012820, 2104810, 2630790, 1874570,  4055459]
+//~ var tz=[10003820, 2054810, 2530790,  874570,  4055459]
+//~ var tz=[10006651,2104961,2481082,960899,3838061]
+/*
 
-//~ var tz=[2999999805,1500001014,3150540,282808,145914]
-//~ var tz=[2999999850,1500000800,3150500,282840,146100]
-//~ 100000000/299999985,2000000/15000008,1700/31505,620/28284,1382/146100
-//3000000124,1500000729,3150180,283141,146537
+999459,209640,232522,81550,40575127
+abs pres 0.0010035740980221058 0.0035424820483330732
+rel pres 0.00032878846629620905 0.002496933320884178
 
-///1- x2*ff2 + x4*f24 - x2*x4*f720 + x4*x4*f40k
-///costay  f2=1/2, f24=1/24,f720=1/720,f40k=1/40580 
-var dz=[10000000000, 100000,   100000,    1000]
-var tz=[20000000010, 239999910-100, 71998270,40578790]
-var tz=[20000000000,2399999,71998126,40578812]
-var tz=[20000000000,2399999,71998376,40578583]
-      //  1/2,100000/2399999,100000/71998376,1000/40578583
+999617,209751,235716,83742,40573301
+abs pres 0.0009309953090351704 0.003453667630372803
+rel pres 0.00030682561708208497 0.002446706113872767
+
+1000706,210452,218946,105753,40569247
+abs pres 0.000553406011687786 0.002965297819790602
+rel pres 0.00018844878745731352 0.002101039051618229
+
+1001282,210481,263079,187457,40554594
+abs pres 0.00039969705210796466 0.0025615640915490623
+rel pres 0.00013487151457337857 0.0018144575635161062
+*/
+      
+//  1/2,100000/2399999,100000/71998376,1000/40578583
+
+
+var fcomp=funcomp
+//~ fcomp=funcompx
+//~ tsn=300000
+var tsn
+tsn=10000000
+tsn=1300000
+//~ tsn=20000000
+//~ tsn=10000
+//~ tsn=1
+var mage=53
+/*
+
+
+*/
+
+var fz=[]; fz[0]=tz[0],fz[1]=tz[1],fz[2]=tz[2],fz[3]=tz[3],fz[4]=tz[4]
+
+//~ var df=[0,0,0,0,1,-1,3,-3,9,-9,30,-30] 
+var df=[0,0,0,0,-1,1,-2,2]
+var mulla=2,mope=0
+var zzsteps=187
+var alph=1, alp={}
+
+var cntd=2
+
+while(tsn--){
+  
+  //~ var ofs=Fdrandom.f48()*0.5
+  
+  var sc = fcomp(
+   function(x){ return Math.cos(x) }
+  ,function(x){ 
+    return costay(x 
+     ,dz[0]/tz[0] 
+     ,dz[1]/tz[1]
+     ,dz[2]/tz[2] 
+     ,dz[3]/tz[3]
+     ,dz[4]/tz[4]
+     ) 
+  }
+,0.0000000001, qpi-0.0000000001, zzsteps
+  )
+  
+  //~ console.log(sc)
+  if(alph){ alp.t=sc.t, alp.m=sc.m, alp.mv=sc.mv, alp.tv=sc.tv, alph=0 }
+  
+  //~ console.log(sc)
+  
+  if((sc.t<=tal&&sc.m<=max&&sc.tv<=talv&&sc.mv<=maxv)
+    &&(sc.t<tal||sc.m<max||sc.tv<talv||sc.mv<maxv)
+    ){
+    
+    tal=sc.t, max=sc.m,talv=sc.tv, maxv=sc.mv,
+    
+    fz[0]=tz[0]
+    fz[1]=tz[1]
+    fz[2]=tz[2]
+    fz[3]=tz[3]
+    fz[4]=tz[4]
+    
+    if(ocount++%cntd===1)
+    { cntd++
+      console.log(fz.join(" "))
+      console.log("scored:",tal,max)
+    }
+    //~ mulla*=1.1
+  }
+  
+  //make test set
+  do{
+    Fdrandom.mixup(df)
+    mulla=Fdrandom.f48()*mage+0.5
+    
+    tz[0] = fz[0]+Math.floor(df[0] *mulla)    //*mulla
+    tz[1] = fz[1]+Math.floor(df[1] *mulla)    //*mulla
+    tz[2] = fz[2]+Math.floor(df[2] *mulla)
+    tz[3] = fz[3]+Math.floor(df[3] *mulla)
+    tz[4] = fz[4]+Math.floor(df[4] *mulla)
+
+  }while((tz[0]!=fz[0])&&(tz[1]!=fz[1])&&(tz[2]!=fz[2])&&(tz[3]!=fz[3])&&(tz[4]!=fz[4]))
+  
+}
+
+console.log("finals for:")
+
+sc = funcomp(
+ function(x){ return Math.cos(x) }
+,function(x){ 
+  return costay(x 
+   ,dz[0]/fz[0] 
+   ,dz[1]/fz[1]
+   ,dz[2]/fz[2] 
+   ,dz[3]/fz[3]
+   ,dz[4]/tz[4]
+   ) 
+}
+,0.0000000001, qpi-0.0000000001, zzsteps
+)
+
+console.log(fz.join(","))
+
+console.log("abs pres",sc.t,sc.m)
+console.log("rel pres",sc.tv,sc.mv)
+
+console.log("abs impv",alp.t-sc.t,alp.m-sc.m)
+console.log("rel impv",alp.tv-sc.tv,alp.mv-sc.mv)
+
+console.log(costay(0.78539811350441,dz[0]/fz[0] ,dz[1]/fz[1],dz[2]/fz[2],dz[3]/fz[3],dz[4]/fz[4]))
+console.log(Math.cos(0.78539811350441),costay(0.78539811350441,dz[0]/fz[0] ,dz[1]/fz[1],dz[2]/fz[2],dz[3]/fz[3],dz[4]/fz[4])-Math.cos(0.78539811350441))
+    
+    
+    
+    
 /*
 legacy:
 finals for:
@@ -179,112 +297,3 @@ rel pres 2.9383274255551413e-17 1.0533415261528431e-9
 1.4897513223033343e-9
 
 */
-
-
-var fcomp=funcomp
-//~ fcomp=funcompx
-//~ tsn=300000
-var tsn
-tsn=10000000
-tsn=500000
-//~ tsn=20000000
-//~ tsn=10000
-//~ tsn=1
-var mage=30
-/*
-
-
-*/
-
-var fz=[]; fz[0]=tz[0],fz[1]=tz[1],fz[2]=tz[2],fz[3]=tz[3],fz[4]=tz[4]
-
-//~ var df=[0,0,0,0,1,-1,3,-3,9,-9,30,-30] 
-var df=[0,0,0,-1,1,-2,2]
-var mulla=2,mope=0
-var zzsteps=187
-var alph=1, alp={}
-
-while(tsn--){
-  
-  //~ var ofs=Fdrandom.f48()*0.5
-  
-  var sc = fcomp(
-   function(x){ return Math.cos(x) }
-  ,function(x){ 
-    return costay(x 
-     ,dz[0]/tz[0] 
-     ,dz[1]/tz[1]
-     ,dz[2]/tz[2] 
-     ,dz[3]/tz[3]
-     //~ ,dz[4]/tz[4]
-     ) 
-  }
-,0.0000000001, qpi-0.0000000001, zzsteps
-  )
-  
-  //~ console.log(sc)
-  if(alph){ alp.t=sc.t, alp.m=sc.m, alp.mv=sc.mv, alp.tv=sc.tv, alph=0 }
-  
-  //~ console.log(sc)
-  
-  if((sc.t<=tal&&sc.m<=max&&sc.tv<=talv&&sc.mv<=maxv)
-    &&(sc.t<tal||sc.m<max||sc.tv<talv||sc.mv<maxv)
-    ){
-    
-    tal=sc.t, max=sc.m,talv=sc.tv, maxv=sc.mv,
-    
-    fz[0]=tz[0]
-    fz[1]=tz[1]
-    fz[2]=tz[2]
-    fz[3]=tz[3]
-    //~ fz[4]=tz[4]
-    
-    //~ if(ocount++%1000===1)
-    {
-      console.log(fz.join(" "))
-      console.log("scored:",tal,max)
-    }
-    //~ mulla*=1.1
-  }
-  
-  //make test set
-  do{
-    Fdrandom.mixup(df)
-    mulla=Fdrandom.f48()*mage+0.5
-    
-    //~ tz[0] = fz[0]+Math.floor(df[0] *mulla)    //*mulla
-    //~ tz[1] = fz[1]+Math.floor(df[1] *mulla)    //*mulla
-    tz[2] = fz[2]+Math.floor(df[2] *mulla)
-    tz[3] = fz[3]+Math.floor(df[3] *mulla)
-  }while((tz[0]!=fz[0])&&(tz[1]!=fz[1])&&(tz[2]!=fz[2])&&(tz[3]!=fz[3]))
-  //~ tz[4] = fz[4]+Math.floor(df[4] *mulla)
-  
-}
-
-console.log("finals for:")
-
-sc = funcomp(
- function(x){ return Math.cos(x) }
-,function(x){ 
-  return costay(x 
-   ,dz[0]/fz[0] 
-   ,dz[1]/fz[1]
-   ,dz[2]/fz[2] 
-   ,dz[3]/fz[3]
-   //~ ,dz[4]/tz[4]
-   ) 
-}
-,0.0000000001, qpi-0.0000000001, zzsteps
-)
-
-console.log(fz.join(","))
-
-console.log("abs pres",sc.t,sc.m)
-console.log("rel pres",sc.tv,sc.mv)
-
-console.log("abs impv",alp.t-sc.t,alp.m-sc.m)
-console.log("rel impv",alp.tv-sc.tv,alp.mv-sc.mv)
-
-console.log(costay(0.78539811350441,dz[0]/fz[0] ,dz[1]/fz[1],dz[2]/fz[2],dz[3]/fz[3]))
-console.log(Math.cos(0.78539811350441),costay(0.78539811350441,dz[0]/fz[0] ,dz[1]/fz[1],dz[2]/fz[2],dz[3]/fz[3])-Math.cos(0.78539811350441))
-    

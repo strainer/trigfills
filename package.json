@@ -1,0 +1,25 @@
+{
+  "name": "trigfills",
+  "version": "0.9.0",
+  "description": "Sin, cos, tan, asin, acos and atan filled for cross browser consistency.",
+  "main": "trigfills.min.js",
+  "scripts": {
+    "test": "require('trigfills').version()"
+  }, 
+  "tonicExample": "require('trigfills').sin(Math.PI/2)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://strainer:howthehelldoesthisget here@github.com/strainer/Fdrandom.js.git"
+  },
+  "keywords": [
+    "trigonometry",
+    "deterministic",
+    "sin","cos","tan","atan","acos","asin"
+  ],
+  "author": "Andrew Strain <AndrewInput@gmail.com> (https://github.com/strainer/)",
+  "license": "Apache 2.0",
+  "bugs": {
+    "url": "https://github.com/strainer/trigfills/issues"
+  },
+  "homepage": "https://github.com/strainer/trigfills#readme"
+}

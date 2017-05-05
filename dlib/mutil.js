@@ -83,8 +83,8 @@ bench = function (meth, bentime, meth_nm, meth_arg) {
   }
   
   ops=Math.floor(((ra+rb)*qqtlen*1000)/2)/1000000
-  console.log(meth_nm+" "+ops+" Mop/s "+donereps+
-    "  am  "+retvsum/donereps);
+  console.log(meth_nm+" "+ops+" Mtest/s "+
+    "  avg : "+retvsum/donereps);
   if ((retvsum/donereps)>0.5){ globav+=1; }
   gdone++;
 };

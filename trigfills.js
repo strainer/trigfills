@@ -13,10 +13,10 @@ var trigfillfactory = function(){ return (function(){
 
   var tau=Math.PI*2   ,pi=Math.PI 
      ,hpi=Math.PI*0.5 ,qpi=Math.PI*0.25 ,epi=Math.PI*0.125 
-     ,sq3=1.7320508075688772 //sqrt(3)
-      
+     ,f3=1/3 ,sq3=1.7320508075688772 //sqrt(3)
+
   function version(){
-    return "beta0" 
+    return "0.9.0" 
   } 
       
   function modp(a,b){
@@ -24,60 +24,52 @@ var trigfillfactory = function(){ return (function(){
   }
 
   function modn(a,b){
-    return a-Math.round(a/b)*b //creates neg
+    return a-Math.floor(a/b + 0.5 )*b //creates neg (note round is slow)
   }
-  
-  function castulp(c,u){ 
-    u=u||256
-    return c*(u+1)-c*u
-  }
-
-  var f3=1/3,f6=1/6,f120=1/120,f5k=1/5040,f362k=1/364840  //362880 
-  function sintay(x){ //taylor series calculation, last fac is tweaked
-    
-    if(x>qpi){ return costay(hpi-x) }
+                                                                               
+  //~ var fh6=1/6,f120=1/120,f5k=1/5040,f362k=1/362880  //362880 
+  var fh6=100000000/600000005,f120=1/120,f5k=1000/5039680,f362k=10/3628880
+       
+  function sintay(x){ //fudged taylor series
     var c=x*x*x
-    return x-(c*f6)+(c*x*x*f120)-(c*c*x*f5k)+(c*c*c*f362k) 
-    
+    return x-(c*fh6)+(c*x*x*f120)-(c*c*x*f5k)+(c*c*c*f362k) 
   }
 
-  var f24=1/24,f720=1/720,f40k=1/40580   //orig: 40320
+  var f24=100000/2399999,f720=100000/71998376,f40k=1000/40578583
+  
   function costay(x){
-    
-    if(x>qpi){ return sintay(hpi-x) }
     var x2=x*x,x4=x2*x2
     return 1- x2*0.5 + x4*f24 - x2*x4*f720 + x4*x4*f40k 
-    
   }
 
   function sin(x){
     
-    x=x-Math.floor(x/tau)*tau
+    x=(x-Math.floor(x/tau)*tau)
     
     if(x<pi){
-      if(x<hpi){ return sintay(x) }
-      return sintay(pi-x) 
+      if(x>=hpi){ x=pi-x }
+      if(x>qpi){ return costay(hpi-x) }
+      return sintay(x)
     }else{
       x-=pi
-      if(x<hpi){ return -0-sintay(x) }
-      return -0-sintay(pi-x)
+      if(x>=hpi){ x=pi-x }
+      if(x>qpi){ return -0-costay(hpi-x) }
+      return -0-sintay(x)
     }	
   }
 
   function cos(x){ return sin(hpi-x) }
   
-  //mined tweaked factors give some extra accuracy
-               
-  var ff3 =100000000000/300000000002
-     ,ff5 =100000/500002
-     ,ff7 =1000/7001 ,ff9 =1000/8995 ,ff11=1000/1102
+  //tweaked factors give atan some extra accuracy
+  var ff3 =100000000000/299999999177
+     ,ff5 =10000000/50000082
+     ,ff7 =100000/700011 ,ff9 =10000/90019 ,ff11=1000/11768
                       
   function atan(x){
     
-    var inv=1, mut=0, mut2=0
+    var pos=1, mut=0, mut2=0
     
-    if(x<0){ inv=-1,x=0-x }
-
+    if(x<0){ pos=0,x=0-x }
     if(x>1){ x=1/x , mut=1  }
 
     if(x>0.26794919){
@@ -85,37 +77,39 @@ var trigfillfactory = function(){ return (function(){
       mut2=1;
     }
 
-    var x2=x*x, x4=x2*x2,x8=x4*x4
+    var x2=x*x ,x4=x2*x2 ,x8=x4*x4
 
-    x=x- x*x2*ff3 + x4*x*ff5 - x4*x2*x*ff7 + x8*x*ff9 - x8*x2*x*ff11
+    x=x- x*x2*ff3 +x4*x*ff5 -x4*x2*x*ff7 +x8*x*ff9 -x8*x2*x*ff11
 
     if(mut2){ x+= hpi*f3  }
-    if(mut){x = hpi-x }
+    if(mut) {x = hpi-x }
    
-    return inv*x
+    if(pos) return x
+    return -x
   }
-                                                //155925  ,  145813
-  var f15=2/15,f315=17/315,f2k=62/2835,f155k=1382/146555
-                              //crude tweak of last fac improved acc by 100s
+                                
+  var fg3=1000000000/2999999887,f15=200000000/1500000678
+     ,f315=170000/3150457,f2k=6200/282874,f155k=1382/146286
+     
   function tan(x){
 
-    var inv=1 ,mut=0 ,mut2=0
-    x=modp(x,pi)
+    var pos=1 ,mut=0 ,mut2=0
+    x=modp(x,pi)*0.99999999999999993
 
-    if(x>hpi){ inv=-1 ,x=pi-x }
+    if(x>hpi){ pos=0 ,x=pi-x }
     if(x>qpi){ mut=1 ,x=hpi-x }
     if(x>epi){ mut2=2, x=x*0.5 } 
     
     var c=x*x*x, cc=c*c  //funky maclaurin series
                   
-    x=  x  +c*f3  +c*x*x*f15  +cc*x*f315  +cc*c*f2k  +cc*c*x*x*f155k
+    x= x +c*fg3 +c*x*x*f15 +cc*x*f315 +cc*c*f2k +cc*c*x*x*f155k
       
     if(mut2){ x= 2*x/(1-x*x) }
-    if(mut){ x=1/x           }
-
-    return inv*x
+    if(mut) { x=1/x          }
+    if(x===Infinity) x=16331239353195370
+    if(pos) return x 
+    return -x
   }
-
 
   function acos(x){
    if(x==-1) return Math.PI
@@ -129,7 +123,6 @@ var trigfillfactory = function(){ return (function(){
   function setmaths(){
     Math.sin=sin, Math.cos=cos, Math.tan=tan 
    ,Math.acos=acos ,Math.asin=asin ,Math.atan=atan 
-   ,Math.modp=modp ,Math.modn=modn ,Math.culp=castulp
    ,Math.hasTrigfills=version()
   }
   
@@ -143,7 +136,6 @@ var trigfillfactory = function(){ return (function(){
    ,setmaths:setmaths
    ,modp:modp
    ,modn:modn
-   ,culp:castulp
    ,version:version
   }
 

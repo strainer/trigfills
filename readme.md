@@ -11,7 +11,7 @@ These 'Trigfills' do not have the full float64 bit accuracy which browser math f
 
 Usage
 =======
-```
+```javascript
 //require or import trigfills.js
   
   trigf=require('./pathto/trigfills.js')

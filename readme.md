@@ -14,21 +14,21 @@ These 'Trigfills' do not have the full float64 bit accuracy which browser math f
 ```javascript
 //require or import trigfills.js
   
-  trigf=require('./pathto/trigfills.js')
+  Trgf=require('./pathto/trigfills.js')
 
 //sin, cos, tan, asin, acos and atan methods
 //are all available on the object.
 
-  eg=trigf.cos(rads)
+  eg=Trgf.cos(rads)
 
 //run setmaths() to override Math.cos ,Math.sin etc...
 
-  trigf.setmaths() 
+  Trgf.setmaths() 
 
 //then Math trig functions are replaced with Trigfills:
 
-  Math.cos === trigf.cos
-  Math.atan === trigf.atan //etc... 
+  Math.cos === Trgf.cos
+  Math.atan === Trgf.atan //etc... 
   Math.hasTrigfills === "version string"
 
 ```
@@ -41,6 +41,22 @@ These 'Trigfills' do not have the full float64 bit accuracy which browser math f
 ## Tests
 
 `drafts/test_node.log` contains nodes test output and `test_moz.log` a firefox output.  The functions have least 9 or 10 digits accuracy, and may run a little faster than browser Math equivalents.  
+
+#### Example Precision:
+```javascript
+Math.tan(0.123)  // 0.1236240658 6927442
+Trgf.tan(0.123)  // 0.1236240658 8797101
+Math.sin(0.123)  // 0.12269009002 431533
+Trgf.sin(0.123)  // 0.12269009002 68945
+Math.cos(0.123)  // 0.99244503213 51935
+Trgf.cos(0.123)  // 0.99244503213 90508
+Math.atan(0.123) // 0.1223852814 7180266
+Trgf.atan(0.123) // 0.1223852814 6213824
+Math.asin(0.123) // 0.1233122751918 7199
+Trgf.asin(0.123) // 0.1233122751818 901
+Math.acos(0.123) // 1.447484051 6030247
+Trgf.acos(0.123) // 1.447484051 6130065
+```
 
 #### Foibles
 

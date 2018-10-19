@@ -10,7 +10,7 @@
 var trigfillfactory = function(){ 
   
   var pi=Math.PI, tau=pi*2 ,hpi=pi/2 ,qpi=pi/4 
-     ,spi=pi/6 ,epi=pi/8 ,f3=1/3 ,sq3=1.7320508075688772 //sqrt(3)
+     ,spi=pi/6 ,epi=pi/8 ,sq3=1.7320508075688772 //sqrt(3)
 
   function version(){ return "0.9.3" } 
       

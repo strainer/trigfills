@@ -7,6 +7,8 @@ TRG=require('../trigfills.js')
 
 var pi=Math.PI
 
+//~ console.log(Math.tan(Math.PI/2))
+//~ console.log(TRG.tan(Math.PI/2))
 //note a few problems with math.tan on node/chrome
 //~ console.log(Math.tan(0),TRG.tan(0))
 //~ console.log(Math.tan(1),TRG.tan(1))
@@ -16,7 +18,6 @@ var pi=Math.PI
 
 //~ console.log(Math.sin(pi),TRG.sin(pi)) //math does not return 0!
 //~ console.log(Math.sin(-pi),TRG.sin(-pi)) //math does not return 0!
-//~ return
 //~ console.log(Math.tan(pi*0.999),TRG.tan(pi*0.999))
 //~ console.log(Math.tan(pi*1.001),TRG.tan(pi*1.001))
 //~ console.log(Math.tan(pi*1.501),TRG.tan(pi*1.501))
@@ -96,10 +97,10 @@ console.log("Precision tests: Input  Mathres  thisres  difference")
 console.log("\n tan")
 funcomp(Math.tan,TRG.tan,-0.5,3.5,0.4)
 
-//~ funcomp(Math.atan,TRG.atan,-3.1,3.1,0.5)
-//~ funcomp(Math.cos,TRG.cos,-3.2,3.2,0.4)
-//~ funcomp(Math.sin,TRG.sin,-3.2,3.2,0.4)
-//~ return
+funcomp(Math.atan,TRG.atan,-3.1,3.1,0.5)
+funcomp(Math.cos,TRG.cos,-3.2,3.2,0.4)
+funcomp(Math.sin,TRG.sin,-3.2,3.2,0.4)
+return
 
 console.log("\n sin")
 funcomp(Math.sin,TRG.sin,-3.2,3.2,0.4)

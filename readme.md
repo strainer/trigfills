@@ -1,13 +1,13 @@
 Trigfills
 =========
 
-Sin, cos, tan, asin, acos and atan polyfills for when cross browser consistency is desired.
+Sin, cos, tan, asin, acos and atan polyfills for cross browser consistency.
 
 ## Reason
 
 Differences in trig function output between firefox and chrome, caused [strainer/fancy](github.com/strainer/fancy) simulations to run differently on the different browsers. Substituting the functions fixed this. 
 
-These 'Trigfills' do not have the full float64 bit accuracy which browser math functions have however they have about 10 decimal digits accuracy and can run a little quicker, as well as providing consistency across browsers.
+These replacements do not have the full float64 bit accuracy which browser math functions have however they have about 10 decimal digits accuracy and can run a little quicker, as well as providing consistency across browsers.
 
 ## Usage
 
@@ -67,5 +67,6 @@ Trgf.acos(0.123) // 1.447484051 6130065
 
 Version
 =======
- 0.9.3 - Minor tweaks
+ 0.9.4 - Minor speed tweaks
+ 0.9.3 - Minor speed tweaks
  0.9.2 - Working release candidate

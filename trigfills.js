@@ -12,7 +12,7 @@ var trigfillfactory = function(){
   var pi=Math.PI, tau=pi*2 ,hpi=pi/2 ,qpi=pi/4 
      ,spi=pi/6 ,epi=pi/8 ,sq3=1.7320508075688772 //sqrt(3)
 
-  function version(){ return "0.9.4" } 
+  function version(){ return "0.9.5" } 
       
   function modp(a,b){
     return a-Math.floor(a/b)*b //removes neg
@@ -78,8 +78,20 @@ var trigfillfactory = function(){
     if(mut)  x = hpi-x
     return x*pos
   }
-                                
-   
+  
+  function atan2(y,x){
+        
+    if(x===0){
+      if(y===0) return 0
+      if(y < 0) return -hpi; else return hpi 
+    }
+    var r=atan(y/x) 
+    if(x>0) return r 
+    if(y<0) r-=pi; else r+=pi 
+    
+    return r-Math.floor(r/tau + 0.5)*tau
+  }
+  
   var fg3=1000000000/2999999887,f15=200000000/1500000678
      ,f315=170000/3150457,f2k=6200/282874,f155k=1382/146286
   
@@ -110,13 +122,13 @@ var trigfillfactory = function(){
 
   function setmaths(){
     Math.sin=sin, Math.cos=cos, Math.tan=tan 
-   ,Math.acos=acos ,Math.asin=asin ,Math.atan=atan 
+   ,Math.acos=acos ,Math.asin=asin ,Math.atan=atan ,Math.atan2=atan2 
    ,Math.hasTrigfills=version()
   }
   
   return {
     sin:sin     ,cos:cos    ,tan:tan 
-   ,acos:acos  ,asin:asin  ,atan:atan
+   ,acos:acos  ,asin:asin  ,atan:atan  ,atan2:atan2
    ,modp:modp  ,modn:modn
    ,setmaths:setmaths
    ,version:version

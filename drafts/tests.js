@@ -7,6 +7,27 @@ TRG=require('../trigfills.js')
 
 var pi=Math.PI
 
+
+//~ console.log(Math.atan2(1,23),TRG.atan2(1,23))
+//~ console.log(Math.atan2(0,0),TRG.atan2(0,0))
+//~ console.log(Math.atan2(0,0.3),TRG.atan2(0,0.3))
+//~ console.log(Math.atan2(0,-0.3),TRG.atan2(0,-0.3))
+//~ console.log(Math.atan2(0.001,-0.3),TRG.atan2(0.001,-0.3)) ////
+//~ console.log(Math.atan2(0.101,-0.3),TRG.atan2(0.101,-0.3)) ////
+//~ console.log(Math.atan2(-0.001,-0.3),TRG.atan2(-0.001,-0.3))
+//~ console.log(Math.atan2(-0.001,-0.0001),TRG.atan2(-0.001,-0.0001))
+//~ console.log(Math.atan(0))
+//~ console.log(Math.atan(-0))
+//~ console.log(TRG.atan(0))
+//~ console.log(TRG.atan(-0))
+//~ console.log(Math.atan2(-0.3,0.3),TRG.atan2(-0.3,0.3))
+//~ console.log(Math.atan2(-0.3,-0.3),TRG.atan2(-0.3,-0.3))
+//~ console.log(Math.atan2(0,2.3),TRG.atan2(0,2.3))
+//~ console.log(Math.atan2(0,-2.3),TRG.atan2(0,-2.3))
+//~ console.log(Math.atan2(-2.3,2.3),TRG.atan2(-2.3,2.3))
+//~ console.log(Math.atan2(-2.3,-2.3),TRG.atan2(-2.3,-2.3))
+//~ return
+
 //~ console.log(Math.tan(Math.PI/2))
 //~ console.log(TRG.tan(Math.PI/2))
 //note a few problems with math.tan on node/chrome
@@ -58,6 +79,24 @@ function funcomp(fna,fnb,s,e,d){
   //~ console.log("mv",mv)
 }
 
+function funcomp2(fna,fnb,s,e,d){
+  var tt=0, mx=0, mv=0, cnt=0
+  for(var i=s;i<=e;i=i+d){
+    for(var j=s;j<=e;j=j+d){
+      var x=fna(i,j),y=fnb(i,j)
+      console.log(i.toPrecision(2),x,y,x-y)
+      var uu=Math.abs(x-y)
+      tt+=(x-y)*(x-y)
+      if(uu>mx){ mx=uu, mv=i }
+      cnt++
+    }
+  }
+  console.log("rootsumsq diff:",Math.sqrt(tt/cnt))
+  console.log("max diff:",mx)
+  console.log()
+  //~ console.log("mv",mv)
+}
+
 function findmaxd(fna,fnb,s,e,d){
   var tt=0, mx=0, mv=0, cnt=0
   for(var j=0;j<d;j++){
@@ -100,7 +139,7 @@ funcomp(Math.tan,TRG.tan,-0.5,3.5,0.4)
 funcomp(Math.atan,TRG.atan,-3.1,3.1,0.5)
 funcomp(Math.cos,TRG.cos,-3.2,3.2,0.4)
 funcomp(Math.sin,TRG.sin,-3.2,3.2,0.4)
-return
+//~ return
 
 console.log("\n sin")
 funcomp(Math.sin,TRG.sin,-3.2,3.2,0.4)
@@ -147,6 +186,11 @@ function ofun(fn,s,e){
 //~ return
 bench( function(){ return ofun(Math.sqrt,0,20)} , 1, "warmup w/ sqrt", 0)
 
+var matan2=function(c){ return Math.atan2(0.1,c) }
+var tatan2=function(c){ return TRG.atan2(0.1,c) }
+var matan2b=function(c){ return Math.atan2(c,1) }
+var tatan2b=function(c){ return TRG.atan2(c,1) }
+
 var epz=0.99999999
 var tfuns=[
   Math.sin, TRG.sin,  -Math.PI*epz, Math.PI*epz
@@ -155,6 +199,8 @@ var tfuns=[
  ,Math.acos,TRG.acos, -epz, epz
  ,Math.asin,TRG.asin, -epz ,epz
  ,Math.atan,TRG.atan, -Math.PI*epz, Math.PI*epz
+ ,matan2,tatan2, -1, 1
+ ,matan2b,tatan2b, -1, 1
  //~ ,modulus,modp, -3, 4
  //~ ,modulus,modn, -3, 4 
  //~ ,modulus,modne, -3, 4 

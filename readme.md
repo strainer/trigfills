@@ -1,13 +1,13 @@
 Trigfills
 =========
 
-Sin, cos, tan, asin, acos and atan polyfills for cross browser consistency.
+Sin, cos, tan, asin, acos atan atan2 polyfills for cross browser consistency.
 
 ## Reason
 
 Differences in trig function output between firefox and chrome, caused [strainer/fancy](github.com/strainer/fancy) simulations to run differently on the different browsers. Substituting the functions fixed this. 
 
-These replacements do not have the full float64 bit accuracy which browser math functions have however they have about 10 decimal digits accuracy and can run a little quicker, as well as providing consistency across browsers.
+These replacements do not have the full accuracy which browser math functions have however they have about 10 decimal digits accuracy, provide consistency across browsers and even tend to run a little quicker.
 
 ## Usage
 
@@ -27,9 +27,9 @@ These replacements do not have the full float64 bit accuracy which browser math 
 
 //then Math trig functions are replaced with Trigfills:
 
-  Math.cos === Trgf.cos
-  Math.atan === Trgf.atan //etc... 
-  Math.hasTrigfills === "version string"
+  Math.cos = Trgf.cos
+  Math.atan = Trgf.atan //etc... 
+  Math.hasTrigfills = "version string"
 
 ```
 
@@ -42,20 +42,22 @@ These replacements do not have the full float64 bit accuracy which browser math 
 
 `drafts/test_node.log` contains nodes test output and `test_moz.log` a firefox output. 
 
-#### Example Precision:
+#### Example Precision & Speed % :
 ```javascript
-Math.tan(0.123)  // 0.1236240658 6927442
-Trgf.tan(0.123)  // 0.1236240658 8797101
-Math.sin(0.123)  // 0.12269009002 431533
-Trgf.sin(0.123)  // 0.12269009002 68945
-Math.cos(0.123)  // 0.99244503213 51935
-Trgf.cos(0.123)  // 0.99244503213 90508
-Math.atan(0.123) // 0.1223852814 7180266
-Trgf.atan(0.123) // 0.1223852814 6213824
-Math.asin(0.123) // 0.1233122751918 7199
-Trgf.asin(0.123) // 0.1233122751818 901
-Math.acos(0.123) // 1.447484051 6030247
-Trgf.acos(0.123) // 1.447484051 6130065
+Math.tan(0.123)  // 0.1236240658 6927442   
+Trgf.tan(0.123)  // 0.1236240658 8797101  135% 
+Math.sin(0.123)  // 0.12269009002 431533   
+Trgf.sin(0.123)  // 0.12269009002 68945   130%
+Math.cos(0.123)  // 0.99244503213 51935    
+Trgf.cos(0.123)  // 0.99244503213 90508   135% 
+Math.atan(0.123) // 0.1223852814 7180266   
+Trgf.atan(0.123) // 0.1223852814 6213824  200% 
+Math.atan2(1,23) // 0.043450895391 53084    
+Trgf.atan2(1,23) // 0.043450895391 40537  250% 
+Math.asin(0.123) // 0.1233122751918 7199   
+Trgf.asin(0.123) // 0.1233122751818 901   130%
+Math.acos(0.123) // 1.447484051 6030247    
+Trgf.acos(0.123) // 1.447484051 6130065   100%
 ```
 
 #### Foibles
@@ -67,6 +69,7 @@ Trgf.acos(0.123) // 1.447484051 6130065
 
 Version
 =======
+ 0.9.5 - Add atan2
  0.9.4 - Minor speed tweaks
  0.9.3 - Minor speed tweaks
  0.9.2 - Working release candidate

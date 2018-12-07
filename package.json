@@ -1,6 +1,6 @@
 {
   "name": "trigfills",
-  "version": "0.9.4",
+  "version": "0.9.5",
   "description": "Sin, cos, tan, asin, acos and atan fill ins for cross browser consistency.",
   "main": "trigfills.min.js",
   "scripts": {
